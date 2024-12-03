@@ -4,12 +4,12 @@ This is 5herl0cked's first attempt at trying the full advent of code.
 
 I'll be jumping between languages based on my mood, but the table of contents here will have every language I end up using + challenge numbers.
 
-| Language | Challenge Numbers |
-|----------|------------------|
-| Python |  |
-| C++ |  |
-| Go |  |
-| Rust |  |
+| Language | Challenge Numbers                            |
+|----------|----------------------------------------------|
+| Python   |                                              |
+| C++      |                                              |
+| Go       |                                              |
+| Rust     | [one](./one), [two](./two), [three](./three) |
 
 
 ---
