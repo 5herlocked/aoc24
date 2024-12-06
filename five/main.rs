@@ -93,6 +93,9 @@ fn fix_and_return_mid(global_constraints: &HashMap<isize, PageOrderingConstraint
         }
     }
 
+    // could do it either as an insertion sort just to get it done quickly, but could also do it as
+    // a merge sort with a complex PartialEq operator
+
     fixed[fixed.len()/2]
 }
 
