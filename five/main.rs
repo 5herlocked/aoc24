@@ -78,19 +78,14 @@ fn compute_correct_middles(global_constraints: &HashMap<isize, PageOrderingConst
 fn fix_and_return_mid(global_constraints: &HashMap<isize, PageOrderingConstraints>, page: Vec<isize>) -> isize {
     let mut fixed = Vec::new();
 
-    let mut is_valid = true;
-    for (index, val) in page.iter().enumerate() {
-        if let Some(constraint) = global_constraints.get(val) {
-            let prev = &page[0..index];
-            let next = &page[index + 1..];
-            if is_valid && prev.iter().all(|x| constraint.before.contains(x)) && next.iter().all(|x| constraint.after.contains(x)) {
-            } else {
-                is_valid = false;
-            }
-        } else {
-            // constraint not found, we don't really care then
-            continue;
+    // insertion sort
+    for page in page {
+        let mut index = 0;
+        while index < fixed.len() && global_constraints.get(&fixed[index]).unwrap().after.contains(&page) {
+            index += 1;
         }
+        fixed.insert(index, page);
+
     }
 
     // could do it either as an insertion sort just to get it done quickly, but could also do it as
@@ -106,7 +101,13 @@ fn main() {
 
     let global_constraint = parse_rules(&rules);
 
-    println!("sum of all correct middle {}", compute_correct_middles(&global_constraint, pages).0);
+    let (res, wrong_seq) = compute_correct_middles(&global_constraint, pages.clone());
+
+    println!("sum of all correct middle {}", res);
+
+    let corrected_sum: isize = wrong_seq.iter().map(|seq| fix_and_return_mid(&global_constraint, seq.clone())).sum();
+
+    println!("sum of corrected middles: {}", corrected_sum);
 }
 
 #[cfg(test)]
@@ -180,10 +181,10 @@ mod tests {
 
         let global_constraint = parse_rules(&rules);
 
-        let (_, wrong_seq) = compute_correct_middles(&global_constraint, pages);
+        let (_, wrong_seq) = compute_correct_middles(&global_constraint, pages.clone());
 
-        let res: isize = wrong_seq.iter().map(|seq| fix_and_return_mid(&global_constraint, seq.clone())).sum();
+        let corrected_sum: isize = wrong_seq.iter().map(|seq| fix_and_return_mid(&global_constraint, seq.clone())).sum();
 
-        assert_eq!(res, 123)
+        assert_eq!(corrected_sum, 123)
     }
 }
