@@ -21,8 +21,10 @@ fn kick_off(val: usize, nums: Vec<u32>) -> (usize, bool) {
     let first = nums[0] as usize;
     let recurse_vec = nums[1..].to_vec();
 
-    let possible = recursive(val, first, &recurse_vec, false) || recursive(val, first, &recurse_vec, true);
-    (val, possible)
+    let add_val = recursive(val, first, &recurse_vec, false);
+    let mul_val = recursive(val, first, &recurse_vec, true);
+
+    (val, add_val || mul_val)
 }
 
 fn recursive(goal: usize, curr_val: usize, next: &Vec<u32>, multiply: bool) -> bool {
